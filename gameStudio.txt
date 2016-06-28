@@ -110,7 +110,7 @@ INSERT INTO comments (USERID, GAMEID, COMMENTS, DATUMKOMENTU) VALUES (4,1,'velmi
 INSERT INTO comments (USERID, GAMEID, COMMENTS, DATUMKOMENTU) VALUES (4,2,'mozem sa od nej odtrhnut','13.7.2008');
 INSERT INTO comments (USERID, GAMEID, COMMENTS, DATUMKOMENTU) VALUES (4,3,'no comment','28.5.2016');
 
---1.    Zoznam hr·Ëov utrieden˝ podæa d·tumu registr·cie
+--1.    Zoznam hr√°ƒçov utrieden√Ω podƒæa d√°tumu registr√°cie
 CREATE VIEW pohlad1 AS
 SELECT USERID, MENO, EMAIL, DATUMREGISTRACIE FROM USERS ORDER BY DATUMREGISTRACIE;
 
@@ -118,56 +118,56 @@ SELECT USERID, MENO, EMAIL, DATUMREGISTRACIE FROM USERS ORDER BY DATUMREGISTRACI
 CREATE VIEW pohlad2 AS
 SELECT * FROM GAME;
 
---3.    Zoznam hier s koment·rmi a menami pouûÌvateæov
+--3.    Zoznam hier s koment√°rmi a menami pou≈æ√≠vateƒæov
 CREATE VIEW pohlad3 AS
 SELECT g.NAZOVHRY, c.COMMENTS, u.MENO FROM GAME g JOIN COMMENTS c ON g.GAMEID = c.GAMEID JOIN USERS u ON u.USERID = c.USERID ORDER BY g.NAZOVHRY;
 
---4.    Hr·Ë s najdlhöÌm menom
+--4.    Hr√°ƒç s najdlh≈°√≠m menom
 CREATE VIEW pohlad4 AS
 SELECT MENO FROM USERS WHERE LENGTH(MENO) = (SELECT MAX(LENGTH(meno)) FROM USERS);
 
---5.    Zoznam hier, ktorÈ nehral nikto (nemaj˙ z·znam v Score)
+--5.    Zoznam hier, ktor√© nehral nikto (nemaj√∫ z√°znam v Score)
 CREATE VIEW pohlad5 AS
 SELECT g.* FROM GAME g LEFT JOIN SCORE s ON g.GAMEID = s.GAMEID WHERE s.GAMEID IS NULL;
 
---6.    Zoznam pouûÌvateæov, ktorÌ nehodnotili ûiadnu hru
+--6.    Zoznam pou≈æ√≠vateƒæov, ktor√≠ nehodnotili ≈æiadnu hru
 CREATE VIEW pohlad6 AS
 SELECT u.USERID, u.MENO, u.EMAIL, u.DATUMREGISTRACIE FROM USERS u LEFT JOIN RATING r ON u.USERID = r.USERID WHERE r.USERID IS NULL;
 
---7.    Zoznam pouûÌvateæov, ktorÌ nehodnotili jednu konkrÈtnu hru (napr. Minesweeper)
+--7.    Zoznam pou≈æ√≠vateƒæov, ktor√≠ nehodnotili jednu konkr√©tnu hru (napr. Minesweeper)
 CREATE VIEW pohlad7 AS
 SELECT u.USERID, u.MENO, u.EMAIL, u.DATUMREGISTRACIE FROM USERS u WHERE u.MENO NOT IN 
 (SELECT DISTINCT u.meno FROM USERS u JOIN RATING r ON u.USERID = r.USERID JOIN GAME g ON g.GAMEID = r.GAMEID WHERE g.NAZOVHRY LIKE 'Borderlands');
 
---8.    PoËet hier, poËet hr·Ëov, poËet koment·rov, poËet hodnotenÌ
+--8.    Poƒçet hier, poƒçet hr√°ƒçov, poƒçet koment√°rov, poƒçet hodnoten√≠
 CREATE VIEW pohlad8 AS
 SELECT (SELECT COUNT(*) FROM GAME) AS pocetHier, 
 (SELECT COUNT(*) FROM USERS) AS pocetHracov, 
 (SELECT COUNT(*) FROM COMMENTS) AS pocetKomentarov, 
 (SELECT COUNT(*) FROM RATING) AS pocetHodnoteni from dual;
 
---9.    Najstaröia hra
+--9.    Najstar≈°ia hra
 CREATE VIEW pohlad9 AS
 SELECT * FROM GAME WHERE DATUMPRIDANIAHRY = (SELECT MIN(DATUMPRIDANIAHRY) FROM GAME);
 
---10.   Zoznam hier s ich priemern˝m ratingom a poËtom hodnotenÌ
+--10.   Zoznam hier s ich priemern√Ωm ratingom a poƒçtom hodnoten√≠
 CREATE VIEW pohlad10 AS
 SELECT g.NAZOVHRY, AVG(r.RATING) AS priemerHodnoteni, COUNT(r.RATING) AS pocetHodnoteni FROM GAME g JOIN RATING r ON g.GAMEID = r.GAMEID GROUP BY g.NAZOVHRY;
 
---11.   Najviac komentovanÈ hry
+--11.   Najviac komentovan√© hry
 CREATE VIEW pohlad11 AS
 SELECT * FROM (SELECT g.* , (SELECT COUNT(*) FROM COMMENTS c WHERE g.GAMEID = c.GAMEID GROUP BY c.GAMEID) AS pocetkomentov FROM GAME g) 
 WHERE (pocetkomentov) = (SELECT MAX(COUNT(*)) AS najviacKomentov FROM COMMENTS c JOIN GAME g ON g.GAMEID = c.GAMEID GROUP BY c.GAMEID);
 
---12.   Zoznam hr·Ëov s ich poËtom hranÌm hier a celkov˝m skÛre, ktorÈ nahrali 
+--12.   Zoznam hr√°ƒçov s ich poƒçtom hran√≠m hier a celkov√Ωm sk√≥re, ktor√© nahrali 
 CREATE VIEW pohlad12 AS
 SELECT u.MENO, COUNT(g.NAZOVHRY) AS pocetHier, SUM(s.SCORE) AS celkoveSkore FROM USERS u JOIN SCORE s ON u.USERID = s.USERID JOIN GAME g ON s.GAMEID = g.GAMEID GROUP BY u.MENO;
 
---13.   Meno hr·Ëa, ktor˝ hral naposledy hru
+--13.   Meno hr√°ƒça, ktor√Ω hral naposledy hru
 CREATE VIEW pohlad13 AS
 SELECT u.USERID, u.MENO, u.EMAIL, u.DATUMREGISTRACIE, s.DATUMHRANIA FROM USERS u JOIN SCORE s ON u.USERID = s.USERID WHERE s.DATUMHRANIA = (SELECT MAX(DATUMHRANIA) FROM SCORE);
 
---14.   PoËet koment·rov pre najobæ˙benejöiu hru
+--14.   Poƒçet koment√°rov pre najobƒæ√∫benej≈°iu hru
 CREATE VIEW pocetHraniHier AS
 SELECT g.NAZOVHRY, COUNT(s.SCORE) AS pocetHrani FROM SCORE s JOIN GAME g ON s.GAMEID = g.GAMEID GROUP BY g.NAZOVHRY;
 
@@ -181,12 +181,12 @@ CREATE VIEW pohlad14 AS
 SELECT noh.NAZOVHRY AS najoblubenejsiaHra, COUNT(c.COMMENTS) AS pocetKomentarov 
 FROM COMMENTS c JOIN GAME g ON g.GAMEID = c.GAMEID JOIN NAJOBLUBENEJSIAHRA noh ON noh.NAZOVHRY = g.NAZOVHRY GROUP BY noh.NAZOVHRY;
 
---15.   Men· hr·Ëov s poËtom koment·rov, ktorÈ pridali k hr·m
+--15.   Men√° hr√°ƒçov s poƒçtom koment√°rov, ktor√© pridali k hr√°m
 CREATE VIEW pohlad15 AS
-SELECT u.meno, COUNT(c.COMMENTS) AS pocetKomentarov FROM USERS u JOIN COMMENTS c ON u.USERID = c.USERID GROUP BY u.MENO;
+SELECT u.meno, g.NAZOVHRY, COUNT(c.COMMENTS) AS pocetKomentarov FROM USERS u JOIN COMMENTS c ON u.USERID = c.USERID JOIN GAME g ON g.GAMEID = c.GAMEID GROUP BY u.MENO, g.NAZOVHRY;
 
 ------------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------SELECT FROM TRYING VIEWS-------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------------------------
-select * from pohlad1;
+select * from pohlad15;
 
