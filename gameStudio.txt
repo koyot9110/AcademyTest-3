@@ -1,0 +1,192 @@
+CREATE TABLE users(
+ userID INTEGER NOT NULL PRIMARY KEY,
+ meno VARCHAR2(15) NOT NULL,
+ heslo VARCHAR2(20) NOT NULL,
+ email VARCHAR2(40) NOT NULL,
+ datumRegistracie DATE NOT NULL,
+ CHECK (length(heslo) > 5)
+);
+
+CREATE TABLE game(
+ gameID INTEGER NOT NULL PRIMARY KEY,
+ nazovHry VARCHAR2(20) NOT NULL,
+ autorHry VARCHAR2(15) NOT NULL,
+ datumPridaniaHry DATE NOT NULL,
+ url VARCHAR2 (100)
+);
+
+CREATE TABLE score(
+userID INTEGER,
+gameID INTEGER,
+score INTEGER NOT NULL,
+datumHrania DATE NOT NULL,
+CHECK (score >= 0),
+PRIMARY KEY (userID, gameID),
+FOREIGN KEY(userID) REFERENCES users(userID),
+FOREIGN KEY(gameID) REFERENCES game(gameID)
+);
+
+CREATE TABLE comments(
+userID INTEGER,
+gameID INTEGER,
+comments VARCHAR2(255),
+datumKomentu DATE NOT NULL,
+PRIMARY KEY (userID, gameID),
+FOREIGN KEY(userID) REFERENCES users(userID),
+FOREIGN KEY(gameID) REFERENCES game(gameID)
+);
+
+CREATE TABLE rating(
+userID INTEGER,
+gameID INTEGER,
+rating INTEGER,
+CHECK (rating >= 0 AND rating <=5),
+PRIMARY KEY (userID, gameID),
+FOREIGN KEY(userID) REFERENCES users(userID),
+FOREIGN KEY(gameID) REFERENCES game(gameID)
+);
+
+CREATE SEQUENCE users_seq
+START WITH     1
+INCREMENT BY   1;
+ 
+CREATE SEQUENCE game_seq
+START WITH     1
+INCREMENT BY   1;
+
+CREATE INDEX users_ix on USERS(MENO);
+CREATE INDEX game_ix on GAME(NAZOVHRY);
+
+INSERT INTO users (USERID, MENO, HESLO, EMAIL, DATUMREGISTRACIE) VALUES (users_seq.nextval, 'Branko', '123456789', 'Branko@gmail.com', '1.2.2012');
+INSERT INTO users (USERID, MENO, HESLO, EMAIL, DATUMREGISTRACIE) VALUES (users_seq.nextval, 'Tomasko', 'ahojheslo', 'Tomasko@gmail.com', '11.12.2013');
+INSERT INTO users (USERID, MENO, HESLO, EMAIL, DATUMREGISTRACIE) VALUES (users_seq.nextval, 'Tadik', 'heslo123', 'Tadik@gmail.com', '1.3.2011');
+INSERT INTO users (USERID, MENO, HESLO, EMAIL, DATUMREGISTRACIE) VALUES (users_seq.nextval, 'Lukasko', '147852', 'Lukasko@gmail.com', '1.5.2015');
+INSERT INTO users (USERID, MENO, HESLO, EMAIL, DATUMREGISTRACIE) VALUES (users_seq.nextval, 'Janko', 'lomka56', 'Janko@gmail.com', '8.9.2014');
+INSERT INTO users (USERID, MENO, HESLO, EMAIL, DATUMREGISTRACIE) VALUES (users_seq.nextval, 'Durko', 'delfin89', 'Durko@gmail.com', '9.6.2010');
+INSERT INTO users (USERID, MENO, HESLO, EMAIL, DATUMREGISTRACIE) VALUES (users_seq.nextval, 'Ferko', 'monitor45', 'Ferko@gmail.com', '17.7.2006');
+INSERT INTO users (USERID, MENO, HESLO, EMAIL, DATUMREGISTRACIE) VALUES (users_seq.nextval, 'Jozko', 'klavirnovy14', 'Jozko@gmail.com', '19.2.2009');
+
+INSERT INTO game (GAMEID, NAZOVHRY, AUTORHRY, DATUMPRIDANIAHRY, URL) VALUES (game_seq.nextval, 'Counter Strike', 'Sierra Studios', '1.11.2000', 'https://sk.wikipedia.org/wiki/Counter-Strike');
+INSERT INTO game (GAMEID, NAZOVHRY, AUTORHRY, DATUMPRIDANIAHRY, URL) VALUES (game_seq.nextval, 'Age of Empire', 'Microsoft', '5.7.1997', 'https://sk.wikipedia.org/wiki/Age_of_Empires_(s%C3%A9ria)');
+INSERT INTO game (GAMEID, NAZOVHRY, AUTORHRY, DATUMPRIDANIAHRY, URL) VALUES (game_seq.nextval, 'World of warcraft', 'Blizzard', '23.11.2004', 'https://sk.wikipedia.org/wiki/World_of_Warcraft');
+INSERT INTO game (GAMEID, NAZOVHRY, AUTORHRY, DATUMPRIDANIAHRY, URL) VALUES (game_seq.nextval, 'Call of Duty', 'Activision', '1.8.2003', 'https://sk.wikipedia.org/wiki/Call_of_Duty_(s%C3%A9ria)');
+INSERT INTO game (GAMEID, NAZOVHRY, AUTORHRY, DATUMPRIDANIAHRY, URL) VALUES (game_seq.nextval, 'Borderlands', 'Gearbox', '1.10.2009', 'https://en.wikipedia.org/wiki/Borderlands_(video_game)');
+INSERT INTO game (GAMEID, NAZOVHRY, AUTORHRY, DATUMPRIDANIAHRY, URL) VALUES (game_seq.nextval, 'Diablo', 'Blizzard', '31.12.1996', 'https://en.wikipedia.org/wiki/Diablo_(video_game)');
+
+INSERT INTO score (USERID, GAMEID, SCORE, DATUMHRANIA) VALUES (1,1,150,'1.11.2000');
+INSERT INTO score (USERID, GAMEID, SCORE, DATUMHRANIA) VALUES (2,3,250,'3.8.2006');
+INSERT INTO score (USERID, GAMEID, SCORE, DATUMHRANIA) VALUES (3,3,150,'12.11.2013');
+INSERT INTO score (USERID, GAMEID, SCORE, DATUMHRANIA) VALUES (4,1,600,'1.8.2007');
+INSERT INTO score (USERID, GAMEID, SCORE, DATUMHRANIA) VALUES (5,6,750,'21.6.2011');
+INSERT INTO score (USERID, GAMEID, SCORE, DATUMHRANIA) VALUES (6,7,150,'28.6.2015');
+INSERT INTO score (USERID, GAMEID, SCORE, DATUMHRANIA) VALUES (8,1,1150,'28.10.2004');
+INSERT INTO score (USERID, GAMEID, SCORE, DATUMHRANIA) VALUES (8,6,950,'25.4.2001');
+INSERT INTO score (USERID, GAMEID, SCORE, DATUMHRANIA) VALUES (6,3,150,'9.6.2002');
+INSERT INTO score (USERID, GAMEID, SCORE, DATUMHRANIA) VALUES (6,1,250,'18.10.2003');
+INSERT INTO score (USERID, GAMEID, SCORE, DATUMHRANIA) VALUES (3,2,200,'19.4.2016');
+INSERT INTO score (USERID, GAMEID, SCORE, DATUMHRANIA) VALUES (2,2,350,'8.1.2012');
+INSERT INTO score (USERID, GAMEID, SCORE, DATUMHRANIA) VALUES (3,1,400,'27.6.2016');
+INSERT INTO score (USERID, GAMEID, SCORE, DATUMHRANIA) VALUES (1,2,1500,'15.6.2016');
+
+INSERT INTO rating (USERID, GAMEID, RATING) VALUES (1,1,1);
+INSERT INTO rating (USERID, GAMEID, RATING) VALUES (1,2,2);
+INSERT INTO rating (USERID, GAMEID, RATING) VALUES (1,3,3);
+INSERT INTO rating (USERID, GAMEID, RATING) VALUES (1,4,2);
+INSERT INTO rating (USERID, GAMEID, RATING) VALUES (2,1,4);
+INSERT INTO rating (USERID, GAMEID, RATING) VALUES (2,2,5);
+INSERT INTO rating (USERID, GAMEID, RATING) VALUES (2,3,4);
+INSERT INTO rating (USERID, GAMEID, RATING) VALUES (3,2,4);
+INSERT INTO rating (USERID, GAMEID, RATING) VALUES (3,3,4);
+INSERT INTO rating (USERID, GAMEID, RATING) VALUES (4,3,3);
+INSERT INTO rating (USERID, GAMEID, RATING) VALUES (5,3,5);
+INSERT INTO rating (USERID, GAMEID, RATING) VALUES (6,6,5);
+INSERT INTO rating (USERID, GAMEID, RATING) VALUES (8,1,5);
+INSERT INTO rating (USERID, GAMEID, RATING) VALUES (6,1,4);
+
+INSERT INTO comments (USERID, GAMEID, COMMENTS, DATUMKOMENTU) VALUES (1,1,'velmi dobra hra','1.1.2014');
+INSERT INTO comments (USERID, GAMEID, COMMENTS, DATUMKOMENTU) VALUES (2,1,'odporucam si zahrat','6.1.2013');
+INSERT INTO comments (USERID, GAMEID, COMMENTS, DATUMKOMENTU) VALUES (3,1,'skvele som sa zabavil','7.9.2012');
+INSERT INTO comments (USERID, GAMEID, COMMENTS, DATUMKOMENTU) VALUES (4,1,'velmi ma to nezaujalo','14.8.2009');
+INSERT INTO comments (USERID, GAMEID, COMMENTS, DATUMKOMENTU) VALUES (4,2,'mozem sa od nej odtrhnut','13.7.2008');
+INSERT INTO comments (USERID, GAMEID, COMMENTS, DATUMKOMENTU) VALUES (4,3,'no comment','28.5.2016');
+
+--1.    Zoznam hráèov utriedený pod¾a dátumu registrácie
+CREATE VIEW pohlad1 AS
+SELECT USERID, MENO, EMAIL, DATUMREGISTRACIE FROM USERS ORDER BY DATUMREGISTRACIE;
+
+--2.    Zoznam hier
+CREATE VIEW pohlad2 AS
+SELECT * FROM GAME;
+
+--3.    Zoznam hier s komentármi a menami používate¾ov
+CREATE VIEW pohlad3 AS
+SELECT g.NAZOVHRY, c.COMMENTS, u.MENO FROM GAME g JOIN COMMENTS c ON g.GAMEID = c.GAMEID JOIN USERS u ON u.USERID = c.USERID ORDER BY g.NAZOVHRY;
+
+--4.    Hráè s najdlhším menom
+CREATE VIEW pohlad4 AS
+SELECT MENO FROM USERS WHERE LENGTH(MENO) = (SELECT MAX(LENGTH(meno)) FROM USERS);
+
+--5.    Zoznam hier, ktoré nehral nikto (nemajú záznam v Score)
+CREATE VIEW pohlad5 AS
+SELECT g.* FROM GAME g LEFT JOIN SCORE s ON g.GAMEID = s.GAMEID WHERE s.GAMEID IS NULL;
+
+--6.    Zoznam používate¾ov, ktorí nehodnotili žiadnu hru
+CREATE VIEW pohlad6 AS
+SELECT u.USERID, u.MENO, u.EMAIL, u.DATUMREGISTRACIE FROM USERS u LEFT JOIN RATING r ON u.USERID = r.USERID WHERE r.USERID IS NULL;
+
+--7.    Zoznam používate¾ov, ktorí nehodnotili jednu konkrétnu hru (napr. Minesweeper)
+CREATE VIEW pohlad7 AS
+SELECT u.USERID, u.MENO, u.EMAIL, u.DATUMREGISTRACIE FROM USERS u WHERE u.MENO NOT IN 
+(SELECT DISTINCT u.meno FROM USERS u JOIN RATING r ON u.USERID = r.USERID JOIN GAME g ON g.GAMEID = r.GAMEID WHERE g.NAZOVHRY LIKE 'Borderlands');
+
+--8.    Poèet hier, poèet hráèov, poèet komentárov, poèet hodnotení
+CREATE VIEW pohlad8 AS
+SELECT (SELECT COUNT(*) FROM GAME) AS pocetHier, 
+(SELECT COUNT(*) FROM USERS) AS pocetHracov, 
+(SELECT COUNT(*) FROM COMMENTS) AS pocetKomentarov, 
+(SELECT COUNT(*) FROM RATING) AS pocetHodnoteni from dual;
+
+--9.    Najstaršia hra
+CREATE VIEW pohlad9 AS
+SELECT * FROM GAME WHERE DATUMPRIDANIAHRY = (SELECT MIN(DATUMPRIDANIAHRY) FROM GAME);
+
+--10.   Zoznam hier s ich priemerným ratingom a poètom hodnotení
+CREATE VIEW pohlad10 AS
+SELECT g.NAZOVHRY, AVG(r.RATING) AS priemerHodnoteni, COUNT(r.RATING) AS pocetHodnoteni FROM GAME g JOIN RATING r ON g.GAMEID = r.GAMEID GROUP BY g.NAZOVHRY;
+
+--11.   Najviac komentované hry
+CREATE VIEW pohlad11 AS
+SELECT * FROM (SELECT g.* , (SELECT COUNT(*) FROM COMMENTS c WHERE g.GAMEID = c.GAMEID GROUP BY c.GAMEID) AS pocetkomentov FROM GAME g) 
+WHERE (pocetkomentov) = (SELECT MAX(COUNT(*)) AS najviacKomentov FROM COMMENTS c JOIN GAME g ON g.GAMEID = c.GAMEID GROUP BY c.GAMEID);
+
+--12.   Zoznam hráèov s ich poètom hraním hier a celkovým skóre, ktoré nahrali 
+CREATE VIEW pohlad12 AS
+SELECT u.MENO, COUNT(g.NAZOVHRY) AS pocetHier, SUM(s.SCORE) AS celkoveSkore FROM USERS u JOIN SCORE s ON u.USERID = s.USERID JOIN GAME g ON s.GAMEID = g.GAMEID GROUP BY u.MENO;
+
+--13.   Meno hráèa, ktorý hral naposledy hru
+CREATE VIEW pohlad13 AS
+SELECT u.USERID, u.MENO, u.EMAIL, u.DATUMREGISTRACIE, s.DATUMHRANIA FROM USERS u JOIN SCORE s ON u.USERID = s.USERID WHERE s.DATUMHRANIA = (SELECT MAX(DATUMHRANIA) FROM SCORE);
+
+--14.   Poèet komentárov pre najob¾úbenejšiu hru
+CREATE VIEW pocetHraniHier AS
+SELECT g.NAZOVHRY, COUNT(s.SCORE) AS pocetHrani FROM SCORE s JOIN GAME g ON s.GAMEID = g.GAMEID GROUP BY g.NAZOVHRY;
+
+CREATE VIEW maxPocetHraniHry AS
+SELECT MAX(COUNT(s.SCORE)) AS maxPocetHrani FROM SCORE s JOIN GAME g ON s.GAMEID = g.GAMEID GROUP BY g.NAZOVHRY;
+
+CREATE VIEW najOblubenejsiaHra AS
+SELECT phh.NAZOVHRY FROM  POCETHRANIHIER phh WHERE phh.POCETHRANI = (SELECT * FROM MAXPOCETHRANIHRY);
+
+CREATE VIEW pohlad14 AS
+SELECT noh.NAZOVHRY AS najoblubenejsiaHra, COUNT(c.COMMENTS) AS pocetKomentarov 
+FROM COMMENTS c JOIN GAME g ON g.GAMEID = c.GAMEID JOIN NAJOBLUBENEJSIAHRA noh ON noh.NAZOVHRY = g.NAZOVHRY GROUP BY noh.NAZOVHRY;
+
+--15.   Mená hráèov s poètom komentárov, ktoré pridali k hrám
+CREATE VIEW pohlad15 AS
+SELECT u.meno, COUNT(c.COMMENTS) AS pocetKomentarov FROM USERS u JOIN COMMENTS c ON u.USERID = c.USERID GROUP BY u.MENO;
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------SELECT FROM TRYING VIEWS-------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------
+select * from pohlad1;
+
